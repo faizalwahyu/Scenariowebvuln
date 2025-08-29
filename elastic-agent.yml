@@ -1,0 +1,11 @@
+outputs:
+  default:
+    type: elasticsearch
+    hosts: ["http://elasticsearch:9200"]
+
+inputs:
+  - type: logfile
+    enabled: true
+    streams:
+      - paths:
+          - /var/log/nginx/*.log
