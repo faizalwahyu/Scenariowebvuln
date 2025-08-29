@@ -2,10 +2,36 @@ outputs:
   default:
     type: elasticsearch
     hosts: ["http://elasticsearch:9200"]
+    username: "elastic"
+    password: "changeme"   # ganti sesuai password elastic di cluster
+    ssl:
+      verification_mode: none
+
+fleet:
+  enabled: false   # disable fleet kalau mau standalone
 
 inputs:
   - type: logfile
     enabled: true
     streams:
       - paths:
-          - /var/log/nginx/*.log
+          - /var/log/nginx/access.log
+        data_stream:
+          dataset: nginx.access
+          type: logs
+      - paths:
+          - /var/log/nginx/error.log
+        data_stream:
+          dataset: nginx.error
+          type: logs
+
+agent.monitoring:
+  enabled: true
+  use_output: default
+  logs: true
+  metrics: true
+
+setup.kibana:
+  host: "http://kibana:5601"
+  username: "elastic"
+  password: "changeme"
