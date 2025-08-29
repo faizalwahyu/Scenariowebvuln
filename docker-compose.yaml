@@ -78,6 +78,19 @@ services:
     depends_on:
       - logstash
     restart: always
+    
+  elastic-agent:
+    image: elastic/elastic-agent:8.15.0
+    container_name: elastic_agent
+    user: root
+    volumes:
+      - ./elastic-agent.yml:/usr/share/elastic-agent/elastic-agent.yml:ro
+      - ./logs:/var/log/nginx:ro   # ambil log dari container nginx
+    networks:
+      - elknet
+    depends_on:
+      - elasticsearch
+    restart: always
 
 networks:
   elknet:
